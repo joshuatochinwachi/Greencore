@@ -3,7 +3,9 @@
 ### Product, Technical & Implementation Documentation — v1.0
 
 **Prepared by:** Joshua Nwachukwu
+
 **Date:** August 2026
+
 **Status:** Draft for client review — pending sign-off on scope, phasing and open questions (Section 12)
 
 ---
@@ -13,7 +15,7 @@
 This document serves two audiences at once:
 
 - **Sections 1–2** are written for the founder/client: what Greencore does, why, and what it costs in time and money to get there.
-- **Sections 3–11** are written as a build specification precise enough that a developer (human or AI-assisted) can implement each module without needing to ask "what did they mean by this."
+- **Sections 3–11** are written as a build specification precise enough that a developer can implement each module without needing to ask "what did they mean by this."
 
 If you only read one section before the kickoff call, read **Section 12 (Open Questions)**. Nothing in Phase 1 should start until those are answered.
 
