@@ -21,25 +21,25 @@ If you only read one section before the kickoff call, read **Section 12 (Open Qu
 
 ## Table of Contents
 
-1. Executive Summary
-2. Product Requirements Document (PRD)
-3. Technical Requirements Document (TRD)
-4. System Architecture
-5. UI/UX Design
-6. App & System Flows
-7. Backend API Design
-8. Database Schema
-9. Security & Data Protection
-10. Implementation Plan & Phasing
-11. Risks & Assumptions
-12. Open Questions Requiring Client Decisions
-13. Appendix
-14. API Contracts (Request/Response Examples)
-15. Full Enum Reference
-16. Environment & Configuration Specification
-17. Acceptance Criteria
-18. Design Tokens (Starter Set)
-19. Seed / Test Data
+1. [Executive Summary](#1-executive-summary)
+2. [Product Requirements Document (PRD)](#2-product-requirements-document-prd)
+3. [Technical Requirements Document (TRD)](#3-technical-requirements-document-trd)
+4. [System Architecture](#4-system-architecture)
+5. [UI/UX Design](#5-uiux-design)
+6. [App & System Flows](#6-app--system-flows)
+7. [Backend API Design](#7-backend-api-design)
+8. [Database Schema](#8-database-schema)
+9. [Security & Data Protection](#9-security--data-protection)
+10. [Implementation Plan & Phasing](#10-implementation-plan--phasing)
+11. [Risks & Assumptions](#11-risks--assumptions)
+12. [Open Questions Requiring Client Decisions](#12-open-questions-requiring-client-decisions)
+13. [Appendix](#13-appendix)
+14. [API Contracts (Request/Response Examples)](#14-api-contracts-requestresponse-examples)
+15. [Full Enum Reference](#15-full-enum-reference)
+16. [Environment & Configuration Specification](#16-environment--configuration-specification)
+17. [Acceptance Criteria](#17-acceptance-criteria)
+18. [Design Tokens (Starter Set)](#18-design-tokens-starter-set)
+19. [Seed / Test Data](#19-seed--test-data)
 
 ---
 
