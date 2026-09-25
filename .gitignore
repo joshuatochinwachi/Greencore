@@ -1,1 +1,54 @@
+# ── Secrets & environment variables ─────────────────────────────────────────
 .env
+.env.*
+!.env.example
+!.env.*.example
+
+# ── Docs (managed outside Git) ───────────────────────────────────────────────
+docs/
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+*.whl
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+.python-version
+
+# ── Node / JS ────────────────────────────────────────────────────────────────
+node_modules/
+.next/
+.expo/
+dist/
+out/
+*.tsbuildinfo
+.turbo/
+.vercel/
+
+# ── OS artefacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+
+# ── Secret scanner output ────────────────────────────────────────────────────
+.gitleaks-report.json

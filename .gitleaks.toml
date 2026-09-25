@@ -1,0 +1,14 @@
+# .gitleaks.toml
+# Pre-commit secret scanner config (Section 9.2 / 16.6 requirement).
+# Run: gitleaks detect --source . --config .gitleaks.toml
+# Or via pre-commit hook (see .pre-commit-config.yaml).
+
+title = "Greencore gitleaks config"
+
+[allowlist]
+  description = "Allowlisted patterns (placeholder values in .env.example etc.)"
+  regexes = [
+    '''<secret>''',
+    '''<generate''',
+    '''placeholder''',
+  ]

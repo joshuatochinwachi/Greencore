@@ -1,0 +1,65 @@
+{
+  "depots": [
+    {
+      "id": "d4a2b1c0-0000-0000-0000-000000000001",
+      "name": "North London Depot"
+    }
+  ],
+  "admin_users": [
+    {
+      "id": "a0000000-0000-0000-0000-000000000001",
+      "full_name": "Test Admin",
+      "email": "admin@test.greencore.app",
+      "password": "Password123!",
+      "permission_role": "super_admin"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "c0000000-0000-0000-0000-000000000001",
+      "registration": "AB12 CDE",
+      "vehicle_type": "class1_hgv",
+      "status": "active"
+    }
+  ],
+  "drivers": [
+    {
+      "id": "b7e10000-0000-0000-0000-000000000001",
+      "full_name": "Test Driver One",
+      "email": "driver1@test.greencore.app",
+      "password": "Password123!",
+      "role": "class1",
+      "status": "active",
+      "depot_id": "d4a2b1c0-0000-0000-0000-000000000001",
+      "vehicle_id": "c0000000-0000-0000-0000-000000000001"
+    }
+  ],
+  "routes": [
+    {
+      "id": "e0000000-0000-0000-0000-000000000001",
+      "route_name": "TEST ROUTE 01",
+      "depot_id": "d4a2b1c0-0000-0000-0000-000000000001",
+      "status": "active",
+      "drops": [
+        {
+          "id": "f0000000-0000-0000-0000-000000000001",
+          "sequence": 1,
+          "account_number": "TEST001",
+          "customer_name": "Test Customer A",
+          "postcode": "AB1 2CD",
+          "delivery_instructions": "Front door",
+          "status": "not_started"
+        },
+        {
+          "id": "f0000000-0000-0000-0000-000000000002",
+          "sequence": 2,
+          "account_number": "TEST002",
+          "customer_name": "Test Customer B",
+          "postcode": "EF3 4GH",
+          "delivery_instructions": "Rear loading bay, ring bell",
+          "status": "not_started"
+        }
+      ]
+    }
+  ]
+}
