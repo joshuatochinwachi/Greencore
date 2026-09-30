@@ -95,9 +95,12 @@ def decode_access_token(token: str) -> dict:
 
 # ── Refresh tokens ────────────────────────────────────────────────────────────
 
-def _hash_token(raw: str) -> str:
+def hash_token(raw: str) -> str:
     """SHA-256 of the raw token — stored in the DB, never the raw value."""
     return hashlib.sha256(raw.encode()).hexdigest()
+
+
+_hash_token = hash_token
 
 
 def create_refresh_token(

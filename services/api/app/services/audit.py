@@ -18,6 +18,21 @@ from sqlalchemy.orm import Session
 from app.models.admin import AuditLogEntry
 
 
+from datetime import datetime
+
+
+def _serialize_value(val: Any) -> Any:
+    if val is None:
+        return None
+    if isinstance(val, (uuid.UUID, datetime)):
+        return str(val)
+    if isinstance(val, dict):
+        return {k: _serialize_value(v) for k, v in val.items()}
+    if isinstance(val, (list, tuple, set)):
+        return [_serialize_value(v) for v in val]
+    return val
+
+
 def log_audit_entry(
     db: Session,
     *,
@@ -27,28 +42,15 @@ def log_audit_entry(
     before_value: dict[str, Any] | None = None,
     after_value: dict[str, Any] | None = None,
 ) -> AuditLogEntry:
-    """
-    Creates and adds an AuditLogEntry to the session. Does NOT commit —
-    the caller's request cycle commits the transaction so the audit entry
-    and the triggering change are atomic.
-
-    Args:
-        admin_user_id: UUID of the admin who made the change. None if the
-                       action was triggered by the system (e.g. auto-close shift).
-        entity_type:   String name of the affected table (e.g. "driver", "route").
-        entity_id:     UUID of the specific row that changed.
-        before_value:  Dict of {field: old_value} for changed fields only.
-        after_value:   Dict of {field: new_value} for changed fields only.
-
-    Returns:
-        The AuditLogEntry instance (not yet committed).
-    """
     entry = AuditLogEntry(
         admin_user_id=uuid.UUID(str(admin_user_id)) if admin_user_id else None,
         entity_type=entity_type,
         entity_id=uuid.UUID(str(entity_id)),
-        before_value=before_value,
-        after_value=after_value,
+        before_value=_serialize_value(before_value),
+        after_value=_serialize_value(after_value),
     )
     db.add(entry)
     return entry
+
+
+record_audit_event = log_audit_entry

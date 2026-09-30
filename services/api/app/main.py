@@ -82,12 +82,15 @@ def create_app() -> FastAPI:
         )
 
     # ── Routers ───────────────────────────────────────────────────────────────
-    app.include_router(auth_router.router)
+    from app.routers import auth as auth_router
+    from app.routers import drivers as drivers_router
+    from app.routers import routes as routes_router
+    from app.routers import allocations as allocations_router
 
-    # Phase 1 routers — registered here once built:
-    # from app.routers import drivers, routes, allocations, shifts, deliveries
-    # app.include_router(drivers.router)
-    # ...
+    app.include_router(auth_router.router)
+    app.include_router(drivers_router.router)
+    app.include_router(routes_router.router)
+    app.include_router(allocations_router.router)
 
     # ── Health check ──────────────────────────────────────────────────────────
     @app.get("/health", tags=["meta"], include_in_schema=not settings.is_production)
