@@ -1,5 +1,5 @@
 # Multi-stage production build for Greencore FastAPI API
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
