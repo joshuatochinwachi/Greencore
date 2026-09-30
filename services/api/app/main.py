@@ -44,10 +44,22 @@ def create_app() -> FastAPI:
 
     app = FastAPI(
         title="Greencore API",
-        description="Transport driver and route management platform — FastAPI backend.",
+        description=(
+            "Transport driver and route management platform — FastAPI backend.\n\n"
+            "**Authentication:** All endpoints (except `/auth/login`) require a Bearer token.\n"
+            "Obtain a token via `POST /auth/login` then pass it as `Authorization: Bearer <token>`.\n\n"
+            "**Roles:** `super_admin` has full access. `admin` has read access to drivers/routes."
+        ),
         version="0.1.0",
-        docs_url="/docs" if not settings.is_production else None,
-        redoc_url="/redoc" if not settings.is_production else None,
+        docs_url="/docs",
+        redoc_url="/redoc",
+        openapi_tags=[
+            {"name": "auth", "description": "Login, token refresh, and logout."},
+            {"name": "drivers", "description": "Driver CRUD, activation/deactivation."},
+            {"name": "routes", "description": "Route management and waypoint editing."},
+            {"name": "allocations", "description": "Assign drivers to routes and confirm allocations."},
+            {"name": "meta", "description": "Health check and API info."},
+        ],
         lifespan=lifespan,
     )
 
@@ -93,9 +105,65 @@ def create_app() -> FastAPI:
     app.include_router(allocations_router.router)
 
     # ── Health check ──────────────────────────────────────────────────────────
-    @app.get("/health", tags=["meta"], include_in_schema=not settings.is_production)
+    @app.get("/health", tags=["meta"])
     def health():
         return {"status": "ok", "environment": settings.environment}
+
+    # ── Root info endpoint ────────────────────────────────────────────────────
+    @app.get("/", tags=["meta"])
+    def root():
+        """API info and endpoint map."""
+        return {
+            "name": "Greencore API",
+            "version": "0.1.0",
+            "description": "Transport driver and route management platform.",
+            "environment": settings.environment,
+            "status": "ok",
+            "docs": "/docs",
+            "redoc": "/redoc",
+            "openapi_schema": "/openapi.json",
+            "endpoints": {
+                "auth": {
+                    "description": "Authentication — login, token refresh, logout.",
+                    "routes": [
+                        {"method": "POST", "path": "/auth/login",   "auth": False, "summary": "Obtain access + refresh tokens"},
+                        {"method": "POST", "path": "/auth/refresh",  "auth": True,  "summary": "Refresh access token"},
+                        {"method": "POST", "path": "/auth/logout",   "auth": True,  "summary": "Revoke refresh token"},
+                    ],
+                },
+                "drivers": {
+                    "description": "Driver management — CRUD and status control.",
+                    "routes": [
+                        {"method": "GET",   "path": "/drivers",                     "auth": True, "summary": "List drivers (paginated)"},
+                        {"method": "POST",  "path": "/drivers",                     "auth": True, "summary": "Create a new driver"},
+                        {"method": "GET",   "path": "/drivers/{id}",               "auth": True, "summary": "Get driver by ID"},
+                        {"method": "PATCH", "path": "/drivers/{id}",               "auth": True, "summary": "Partial update driver"},
+                        {"method": "POST",  "path": "/drivers/{id}/deactivate",    "auth": True, "summary": "Deactivate driver"},
+                        {"method": "POST",  "path": "/drivers/{id}/reactivate",    "auth": True, "summary": "Reactivate driver"},
+                    ],
+                },
+                "routes": {
+                    "description": "Route management — stops, waypoints, and scheduling.",
+                    "routes": [
+                        {"method": "GET",    "path": "/routes",              "auth": True, "summary": "List routes"},
+                        {"method": "POST",   "path": "/routes",              "auth": True, "summary": "Create a route"},
+                        {"method": "GET",    "path": "/routes/{id}",         "auth": True, "summary": "Get route by ID"},
+                        {"method": "PATCH",  "path": "/routes/{id}",         "auth": True, "summary": "Update route details"},
+                        {"method": "DELETE", "path": "/routes/{id}",         "auth": True, "summary": "Delete route"},
+                    ],
+                },
+                "allocations": {
+                    "description": "Driver-route allocations — assign and confirm.",
+                    "routes": [
+                        {"method": "GET",  "path": "/allocations",              "auth": True, "summary": "List allocations"},
+                        {"method": "POST", "path": "/allocations",              "auth": True, "summary": "Create allocation"},
+                        {"method": "GET",  "path": "/allocations/{id}",         "auth": True, "summary": "Get allocation by ID"},
+                        {"method": "POST", "path": "/allocations/{id}/confirm", "auth": True, "summary": "Confirm allocation"},
+                        {"method": "POST", "path": "/allocations/{id}/cancel",  "auth": True, "summary": "Cancel allocation"},
+                    ],
+                },
+            },
+        }
 
     return app
 
