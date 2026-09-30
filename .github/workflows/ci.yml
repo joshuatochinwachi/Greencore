@@ -29,6 +29,22 @@ jobs:
       run:
         working-directory: services/api
 
+    # Spin up a throwaway Postgres for CI — production DB is never touched
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: greencore
+          POSTGRES_PASSWORD: greencore_dev
+          POSTGRES_DB: greencore_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -45,9 +61,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run Migrations
+        env:
+          DATABASE_URL: postgresql://greencore:greencore_dev@localhost:5432/greencore_test
+          ENVIRONMENT: "development"
+        run: |
+          alembic upgrade head
+
       - name: Run Pytest
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://greencore:greencore_dev@localhost:5432/greencore' }}
+          # Always use the isolated CI test DB — never the production secret
+          DATABASE_URL: postgresql://greencore:greencore_dev@localhost:5432/greencore_test
           JWT_SECRET: "ci-secret-for-automated-tests-only-not-for-production-use"
           ENVIRONMENT: "development"
         run: |
