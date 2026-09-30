@@ -64,6 +64,7 @@ jobs:
       - name: Run Migrations
         env:
           DATABASE_URL: postgresql://greencore:greencore_dev@localhost:5432/greencore_test
+          JWT_SECRET: "ci-secret-for-automated-tests-only-not-for-production-use"
           ENVIRONMENT: "development"
         run: |
           alembic upgrade head
